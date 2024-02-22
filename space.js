@@ -81,6 +81,21 @@ window.onload = function () {
       }
   });
 
+  //Get change bullet button
+  bulletSelectorButton = document.getElementById("bullet-selector");
+  var clickCount = 1;
+
+  bulletSelectorButton.addEventListener('click', function () {
+    clickCount++;
+    if (clickCount === 1) {
+      bulletSelectorButton.innerHTML = '<h3>Single shoot</h3>';
+    } else if (clickCount === 2) {
+      bulletSelectorButton.innerHTML = '<h3>Sub machine gun</h3>';
+    } else {
+      bulletSelectorButton.innerHTML = '<h3 style="color:red;">#!INDEFINIDO!#<h3>';
+      clickCount = 0;
+    }
+  });
 
 }
 
@@ -147,7 +162,7 @@ function update() {
   for (let i = 0; i < bulletArray.length; i++) {
     let bullet = bulletArray[i];
     bullet.y += bulletVelocityY;
-    context.fillStyle = "white";
+    context.fillStyle = "red";
     context.fillRect(bullet.x, bullet.y,bullet.width, bullet.height);
 
     //bullet collision with aliens
