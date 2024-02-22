@@ -40,9 +40,13 @@ let alienVelocityX = 1; //alien moving speed
 //bullets
 let bulletArray = [];
 let bulletVelocityY = -10; //bullet moving speed
+let rate = 375; // cadence of the bullet in ms
 
+//other
 let score = 0;
 let gameOver = false;
+
+let clickCount = 1;
 
 window.onload = function () {
   board = document.getElementById("board");
@@ -68,35 +72,18 @@ window.onload = function () {
   requestAnimationFrame(update);
   document.addEventListener("keydown", moveShip);
 
-  // 
+  // Wait a amount of seconds to the next shoot (Only Works Single shoot mode) RATE variable
   let lastShootTime = 0;
   let isFirstTime = true;
 
-  document.addEventListener("keyup", function(event) {
-      let now = Date.now();
-      if (isFirstTime || now - lastShootTime > 375) {
-          shoot(event);
-          lastShootTime = now;
-          isFirstTime = false;
-      }
-  });
-
-  //Get change bullet button
-  bulletSelectorButton = document.getElementById("bullet-selector");
-  var clickCount = 1;
-
-  bulletSelectorButton.addEventListener('click', function () {
-    clickCount++;
-    if (clickCount === 1) {
-      bulletSelectorButton.innerHTML = '<h3>Single shoot</h3>';
-    } else if (clickCount === 2) {
-      bulletSelectorButton.innerHTML = '<h3>Sub machine gun</h3>';
-    } else {
-      bulletSelectorButton.innerHTML = '<h3 style="color:red;">#!INDEFINIDO!#<h3>';
-      clickCount = 0;
+  document.addEventListener("keyup", function (event) {
+    let now = Date.now();
+    if (isFirstTime || now - lastShootTime > rate) {
+      shoot(event);
+      lastShootTime = now;
+      isFirstTime = false;
     }
   });
-
 }
 
 function update() {
@@ -135,44 +122,62 @@ function update() {
     }
   }
 
-  //double shoot
-  // for (let i = 0; i < bulletArray.length; i++) {
+  //Get change bullet button
+  bulletSelectorButton = document.getElementById("bullet-selector");
 
-  //   let bullet = bulletArray[i];
-  //   let bullet2 = bulletArray[i]
-  //   bullet.y += bulletVelocityY;
-  //   bullet.y2 += bulletVelocityY;
-  //   context.fillStyle = "white";
-  //   context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-  //   context.fillRect(bullet.x2, bullet.y2, bullet.width, bullet.height)
+  bulletSelectorButton.addEventListener('click', function () {
+    clickCount++;
+    if (clickCount === 1) {
+      bulletSelectorButton.innerHTML = '<h3>Single shoot</h3>';
+    } else if (clickCount === 2) {
+      bulletSelectorButton.innerHTML = '<h3>Sub machine gun</h3>';
+    } else {
+      bulletSelectorButton.innerHTML = '<h3 style="color:red;">#!INDEFINIDO!#<h3>';
+      clickCount = 0;
+    }
+  });
 
-  //   //bullet collision with aliens
-  //   for (let j = 0; j < alienArray.length; j++) {
-  //     let alien = alienArray[j];
-  //     if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
-  //       bullet.used = true;
-  //       alien.alive = false;
-  //       alienCount--;
-  //       score += 100;
-  //     }
-  //   }
-  // }
+  if(clickCount == 1) {
+      //single shoot
+      for (let i = 0; i < bulletArray.length; i++) {
+        let bullet = bulletArray[i];
+        bullet.y += bulletVelocityY;
+        context.fillStyle = "red";
+        context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
 
-  // single shoot
-  for (let i = 0; i < bulletArray.length; i++) {
-    let bullet = bulletArray[i];
-    bullet.y += bulletVelocityY;
-    context.fillStyle = "red";
-    context.fillRect(bullet.x, bullet.y,bullet.width, bullet.height);
-
-    //bullet collision with aliens
-    for (let j = 0; j < alienArray.length; j++) {
-      let alien = alienArray[j];
-      if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
-        bullet.used = true;
-        alien.alive = false;
-        alienCount--;
-        score += 100;
+        //bullet collision with aliens
+        for (let j = 0; j < alienArray.length; j++) {
+          let alien = alienArray[j];
+          if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
+            bullet.used = true;
+            alien.alive = false;
+            alienCount--;
+            score += 100;
+          }
+        }
+      }
+  }else if (clickCount == 2){
+    //double shoot
+    rate = 0; // increase the rate of the shoot
+    for (let i = 0; i < bulletArray.length; i++) {
+  
+      let bullet = bulletArray[i];
+      let bullet2 = bulletArray[i]
+      bullet.y += bulletVelocityY * 1.5;
+      bullet.y2 += bulletVelocityY * 1.5;
+      context.fillStyle = "white";
+      context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+      context.fillRect(bullet.x2, bullet.y2, bullet.width, bullet.height)
+  
+      //bullet collision with aliens
+      for (let j = 0; j < alienArray.length; j++) {
+        let alien = alienArray[j];
+        if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
+          bullet.used = true;
+          alien.alive = false;
+          alienCount--;
+          score += 100;
+        }
       }
     }
   }
@@ -252,7 +257,7 @@ function shoot(e) {
       used: false
     }
     bulletArray.push(bullet);
-    
+
   }
 }
 
