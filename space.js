@@ -137,8 +137,9 @@ function update() {
     }
   });
 
-  if(clickCount == 1) {
+  if(clickCount === 1) {
       //single shoot
+      rate = 375; //slow down the rate of the shoot
       for (let i = 0; i < bulletArray.length; i++) {
         let bullet = bulletArray[i];
         bullet.y += bulletVelocityY;
@@ -156,16 +157,18 @@ function update() {
           }
         }
       }
-  }else if (clickCount == 2){
+  }else if (clickCount === 2){
     //double shoot
     rate = 0; // increase the rate of the shoot
     for (let i = 0; i < bulletArray.length; i++) {
   
       let bullet = bulletArray[i];
-      let bullet2 = bulletArray[i]
-      bullet.y += bulletVelocityY * 1.5;
-      bullet.y2 += bulletVelocityY * 1.5;
+      bullet.y += bulletVelocityY * 1.5;        // Re update the velocity of the bullet
+      bullet.y2 += bulletVelocityY * 1.5;       // Re update the velocity of the bullet
+      bullet.x = ship.x + shipWidth * 13 / 32;  //Re update the out of the bullet
+      bullet.x2 = ship.x + shipWidth * 17 / 32;  //Re update the out of the bullet
       context.fillStyle = "white";
+
       context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
       context.fillRect(bullet.x2, bullet.y2, bullet.width, bullet.height)
   
@@ -248,8 +251,8 @@ function shoot(e) {
   if (e.code == "Space") {
     //shoot
     let bullet = {
-      x: ship.x + shipWidth * 16 / 32,
-      x2: ship.x + shipWidth * 20 / 32,
+      x: ship.x + shipWidth * 15 / 32,
+      x2: ship.x + shipWidth * 15 / 32,
       y: ship.y,
       y2: ship.y,
       width: tileSize / 8,
