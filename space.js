@@ -128,11 +128,11 @@ function update() {
   bulletSelectorButton.addEventListener('click', function () {
     clickCount++;
     if (clickCount === 1) {
-      bulletSelectorButton.innerHTML = '<h3>Single shoot</h3>';
+      bulletSelectorButton.innerHTML = '<img src="bullet_rifle.png" class="img_shot" alt="">';
     } else if (clickCount === 2) {
-      bulletSelectorButton.innerHTML = '<h3>Sub machine gun</h3>';
+      bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
     } else {
-      bulletSelectorButton.innerHTML = '<h3 style="color:red;">#!INDEFINIDO!#<h3>';
+      bulletSelectorButton.innerHTML = '<h3 style="color:red;">#!??!#<h3>';
       clickCount = 0;
     }
   });
