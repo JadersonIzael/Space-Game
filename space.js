@@ -42,11 +42,20 @@ let bulletArray = [];
 let bulletVelocityY = -10; //bullet moving speed
 let rate = 375; // cadence of the bullet in ms
 
+let lastChangebullet;
+let bulletDuration = 3000;
+let arrayCurrentAndLastRandomNumber = [0, 0];
+
+var counter = 0;
+
 //other
 let score = 0;
 let gameOver = false;
 
 let clickCount = 1;
+
+//
+var shotFunctions = [singleShot, doubleShot];
 
 window.onload = function () {
   board = document.getElementById("board");
@@ -125,22 +134,47 @@ function update() {
   //Get change bullet button
   bulletSelectorButton = document.getElementById("bullet-selector");
 
-  bulletSelectorButton.addEventListener('click', function () {
-    clickCount++;
-    if (clickCount === 1) {
-      bulletSelectorButton.innerHTML = '<img src="bullet_rifle.png" class="img_shot" alt="">';
-    } else if (clickCount === 2) {
-      bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
-    } else {
-      bulletSelectorButton.innerHTML = '<h3 style="color:red;">#!??!#<h3>';
-      clickCount = 0;
-    }
-  });
+  // let randomNumber = Math.floor(Math.random() * 2) + 1;
+  // let timeNow = Date.now();
 
-  if (clickCount === 1) {
-    singleShot();
-  } else if (clickCount === 2) {
+  // if (arrayCurrentAndLastRandomNumber[0] === 0) {
+  //   arrayCurrentAndLastRandomNumber[0] = randomNumber;
+  //   lastChangebullet = Date.now(); // Receive the last change time
+  // } else {
+  //   arrayCurrentAndLastRandomNumber[1] = randomNumber;
+  // }
+
+  // var result = timeNow - lastChangebullet;
+
+  // if (result > bulletDuration) {
+
+  //   if (arrayCurrentAndLastRandomNumber[1] === 1) {
+  //     singleShot();
+  //     lastChangebullet = Date.now(); // Receive the last change time
+  //     arrayCurrentAndLastRandomNumber[0] = randomNumber;
+  //     bulletSelectorButton.innerHTML = '<img src="bullet_rifle.png" class="img_shot" alt="">';
+
+  //   } else if (arrayCurrentAndLastRandomNumber[1] === 2) {
+  //     doubleShot();
+  //     lastChangebullet = Date.now(); // Receive the last change time
+  //     arrayCurrentAndLastRandomNumber[0] = randomNumber;
+  //     bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
+  //   }
+  // } else {
+  //   if (arrayCurrentAndLastRandomNumber[0] === 1) {
+  //     singleShot();
+  //   } else if (arrayCurrentAndLastRandomNumber[0] === 2) {
+  //     doubleShot();
+  //   }
+  // }
+
+  if (score >= 7600) {
     doubleShot();
+    bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
+  }
+  else {
+    singleShot();
+    bulletSelectorButton.innerHTML = '<img src="bullet_rifle.png" class="img_shot" alt="">';
   }
 
   //clear bullets
