@@ -137,52 +137,10 @@ function update() {
     }
   });
 
-  if(clickCount === 1) {
-      //single shoot
-      rate = 375; //slow down the rate of the shoot
-      for (let i = 0; i < bulletArray.length; i++) {
-        let bullet = bulletArray[i];
-        bullet.y += bulletVelocityY;
-        context.fillStyle = "red";
-        context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-
-        //bullet collision with aliens
-        for (let j = 0; j < alienArray.length; j++) {
-          let alien = alienArray[j];
-          if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
-            bullet.used = true;
-            alien.alive = false;
-            alienCount--;
-            score += 100;
-          }
-        }
-      }
-  }else if (clickCount === 2){
-    //double shoot
-    rate = 0; // increase the rate of the shoot
-    for (let i = 0; i < bulletArray.length; i++) {
-  
-      let bullet = bulletArray[i];
-      bullet.y += bulletVelocityY * 1.5;        // Re update the velocity of the bullet
-      bullet.y2 += bulletVelocityY * 1.5;       // Re update the velocity of the bullet
-      bullet.x = ship.x + shipWidth * 13 / 32;  //Re update the out of the bullet
-      bullet.x2 = ship.x + shipWidth * 17 / 32;  //Re update the out of the bullet
-      context.fillStyle = "white";
-
-      context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-      context.fillRect(bullet.x2, bullet.y2, bullet.width, bullet.height)
-  
-      //bullet collision with aliens
-      for (let j = 0; j < alienArray.length; j++) {
-        let alien = alienArray[j];
-        if (!bullet.used && alien.alive && detectCollision(bullet, alien)) {
-          bullet.used = true;
-          alien.alive = false;
-          alienCount--;
-          score += 100;
-        }
-      }
-    }
+  if (clickCount === 1) {
+    singleShot();
+  } else if (clickCount === 2) {
+    doubleShot();
   }
 
   //clear bullets
@@ -211,6 +169,54 @@ function update() {
   context.fillStyle = "white";
   context.font = "16px courier";
   context.fillText(score, 5, 20);
+}
+
+function singleShot() {
+  //single shoot
+  rate = 375; //slow down the rate of the shoot
+  lastChangebullet = Date.now(); // Receive the last change time
+  for (let i = 0; i < bulletArray.length; i++) {
+    let bullet = bulletArray[i];
+    bullet.y += bulletVelocityY;
+    context.fillStyle = "red";
+    context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+
+    bulletCollision(bullet);
+  }
+}
+
+function doubleShot() {
+  //double shoot
+  rate = 0; // increase the rate of the shoot
+  lastChangebullet = Date.now(); // Receive the last change time
+  for (let i = 0; i < bulletArray.length; i++) {
+
+    let bullet = bulletArray[i];
+    bullet.y += bulletVelocityY * 1.5;        // Re update the velocity of the bullet
+    bullet.y2 += bulletVelocityY * 1.5;       // Re update the velocity of the bullet
+    bullet.x = ship.x + shipWidth * 13 / 32;  //Re update the out of the bullet
+    bullet.x2 = ship.x + shipWidth * 17 / 32;  //Re update the out of the bullet
+    context.fillStyle = "white";
+
+    context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    context.fillRect(bullet.x2, bullet.y2, bullet.width, bullet.height)
+
+    bulletCollision(bullet);
+
+  }
+}
+
+function bulletCollision(ammo) {
+  //bullet collision with aliens
+  for (let j = 0; j < alienArray.length; j++) {
+    let alien = alienArray[j];
+    if (!ammo.used && alien.alive && detectCollision(ammo, alien)) {
+      ammo.used = true;
+      alien.alive = false;
+      alienCount--;
+      score += 100;
+    }
+  }
 }
 
 function moveShip(e) {
