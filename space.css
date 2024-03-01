@@ -1,6 +1,12 @@
+/* Import the fonts*/
+@font-face {
+  font-family: '8bitsFont';
+  src: url('fonts/8-BIT\ WONDER.WOFF') format('woff');
+}
+
 body {
-    font-family:'Courier New', Courier, monospace;
-    text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
 }
 
 #board {
@@ -8,7 +14,7 @@ body {
   background-size: 512px 512px
 }
 
-.bullet-selector{
+.bullet-selector {
   width: auto;
   height: 50px;
   background-color: #f5f5f5;
@@ -19,7 +25,51 @@ body {
   margin-left: 60%;
 }
 
-.img_shot{
+.img_shot {
   width: 40px;
   height: 40px;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2; /*appears above the game*/
+}
+
+
+#popup {
+  display: none;
+  position: fixed;
+  width: 250px;
+  height: 250px;
+  background: rgba(128, 128, 128, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3; /*appears above the overlay*/
+  font-family: '8bitsFont', sans-serif;
+}
+
+/* Estilo dos botões */
+.popup-btn {
+  margin-top: 50px;
+  margin-right: 10px;
+  margin-left: 10px;
+  font-family: '8bitsFont', sans-serif;
+  font-size: small;
+}
+
+#title{
+  margin-top: 20px;
+  font-family: '8bitsFont', sans-serif;
 }

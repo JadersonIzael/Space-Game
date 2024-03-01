@@ -42,11 +42,11 @@ let bulletArray = [];
 let bulletVelocityY = -10; //bullet moving speed
 let rate = 375; // cadence of the bullet in ms
 
-let lastChangebullet;
-let bulletDuration = 3000;
-let arrayCurrentAndLastRandomNumber = [0, 0];
+// let lastChangebullet;
+// let bulletDuration = 3000;
+// let arrayCurrentAndLastRandomNumber = [0, 0];
+var randomNumber = Math.floor(Math.random() * 2) + 1;;
 
-var counter = 0;
 
 //other
 let score = 0;
@@ -54,8 +54,6 @@ let gameOver = false;
 
 let clickCount = 1;
 
-//
-var shotFunctions = [singleShot, doubleShot];
 
 window.onload = function () {
   board = document.getElementById("board");
@@ -99,6 +97,10 @@ function update() {
   requestAnimationFrame(update);
 
   if (gameOver) {
+    // show up the overlay (the gray background)
+    document.getElementById('overlay').style.display = 'block'; 
+    // show up the pop up 
+    document.getElementById('popup').style.display = 'block';
     return;
   }
 
@@ -134,47 +136,12 @@ function update() {
   //Get change bullet button
   bulletSelectorButton = document.getElementById("bullet-selector");
 
-  // let randomNumber = Math.floor(Math.random() * 2) + 1;
-  // let timeNow = Date.now();
-
-  // if (arrayCurrentAndLastRandomNumber[0] === 0) {
-  //   arrayCurrentAndLastRandomNumber[0] = randomNumber;
-  //   lastChangebullet = Date.now(); // Receive the last change time
-  // } else {
-  //   arrayCurrentAndLastRandomNumber[1] = randomNumber;
-  // }
-
-  // var result = timeNow - lastChangebullet;
-
-  // if (result > bulletDuration) {
-
-  //   if (arrayCurrentAndLastRandomNumber[1] === 1) {
-  //     singleShot();
-  //     lastChangebullet = Date.now(); // Receive the last change time
-  //     arrayCurrentAndLastRandomNumber[0] = randomNumber;
-  //     bulletSelectorButton.innerHTML = '<img src="bullet_rifle.png" class="img_shot" alt="">';
-
-  //   } else if (arrayCurrentAndLastRandomNumber[1] === 2) {
-  //     doubleShot();
-  //     lastChangebullet = Date.now(); // Receive the last change time
-  //     arrayCurrentAndLastRandomNumber[0] = randomNumber;
-  //     bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
-  //   }
-  // } else {
-  //   if (arrayCurrentAndLastRandomNumber[0] === 1) {
-  //     singleShot();
-  //   } else if (arrayCurrentAndLastRandomNumber[0] === 2) {
-  //     doubleShot();
-  //   }
-  // }
-
-  if (score >= 7600) {
-    doubleShot();
-    bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
-  }
-  else {
+  if (randomNumber === 1) {
     singleShot();
     bulletSelectorButton.innerHTML = '<img src="bullet_rifle.png" class="img_shot" alt="">';
+  } else if (randomNumber === 2) {
+    doubleShot();
+    bulletSelectorButton.innerHTML = '<img src="double-bullet.png" class="img_shot" alt="">';
   }
 
   //clear bullets
@@ -184,6 +151,9 @@ function update() {
 
   //next level
   if (alienCount == 0) {
+    // Ramdomize a number
+    randomNumber = Math.floor(Math.random() * 2) + 1;
+
     //increase the number of aliens in columns and rows by 1
     score += alienColumns * alienRows * 100; //bonus points :)
     alienColumns = Math.min(alienColumns + 1, columns / 2 - 2); //cap at 16/2 -2 = 6
